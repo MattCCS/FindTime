@@ -2,26 +2,27 @@
 import unittest
 
 from findtime import days
+from findtime import peekgen
 
 
 class TestDays(unittest.TestCase):
 
     @classmethod
     def setUp(self):
-        self.GARBAGE = 'hello'
+        self.TIME = '9-5'
 
-    def test_days(self):
+    def evaluate(self, test_days):
+        return days.parse_days_iter(peekgen.peekgen(test_days))
 
-        TEST_TIME = 'hello'
-        TEST_DAYS = [
-            '',
-        ]
+    def test_good_range(self):
+        self.assertListEqual(list('MTWRF'), self.evaluate('M-F'))
 
-        for test_days in TEST_DAYS:
-            test_days = test_days + TEST_TIME
-            test_days_peekgen = peekgen.peekgen(test_days)
-            print parse_days_iter(test_days_peekgen)
-            print list(test_days_peekgen)
+    def test_no_run_over(self):
+        self.assertListEqual(list('MTWRF'), self.evaluate('M-F9-5'))
+
+    def test_bad_range(self):
+        with self.assertRaises(days.NonMonotonicDayRangeError):
+            self.evaluate('F-M')
 
 
 if __name__ == '__main__':
