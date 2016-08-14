@@ -39,7 +39,6 @@ def parse_days_iter(days_peekgen):
     valid_days = set(DAYS) | set('-')
     days = [first]
     for maybe_day in days_peekgen:
-        print maybe_day
         if maybe_day in valid_days:
             days.append(maybe_day)
         else:
