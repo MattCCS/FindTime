@@ -1,0 +1,7 @@
+true work: 7/11-12/30M-F9-5p
+work: M-F9-5p
+busy: M-F7-9a,5-6p
+free: M-Fp6:30- S10- Up12-8
+
+last semester: M-R4:30-9p R8-10p S1-4p
+
