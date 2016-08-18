@@ -67,6 +67,9 @@ class TestDays(unittest.TestCase):
     def test_no_runover_range(self):
         self.assertListEqual(list('MTWRF'), self.evaluate('M-F9-5'))
 
+    def test_no_runover_half_range(self):
+        self.assertListEqual(list('MTWRF'), self.evaluate('M-F-5p'))
+
     def test_late_wildcard_ends_early_range(self):
         self.assertListEqual(list('MTWRF'), self.evaluate('M-F*'))
 

@@ -41,6 +41,8 @@ def parse_days_iter(days_peekgen):
     for maybe_day in days_peekgen:
         if maybe_day in valid_days:
             days.append(maybe_day)
+            if maybe_day == '-':
+                valid_days.remove('-')
         else:
             days_peekgen.send(maybe_day)  # we must have reached the end!
             break
