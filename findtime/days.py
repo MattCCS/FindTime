@@ -2,8 +2,6 @@
 Parser for days!
 """
 
-from findtime import peekgen
-
 
 WILDCARD = '*'
 DAYS_ORDERED = list("MTWRFSU")
