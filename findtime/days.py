@@ -13,11 +13,11 @@ DAYS = dict(zip(DAYS_ORDERED, xrange(7)))
 class DayError(Exception): pass
 
 class DaysMissingError(DayError): pass
+class DuplicateDaysError(DayError): pass
 class InvalidDayError(DayError): pass
 class InvalidDayRangeError(DayError): pass
-class NonMonotonicDayRangeError(DayError): pass
-class DuplicateDaysError(DayError): pass
 class NonMonotonicDaysError(DayError): pass
+class NonMonotonicDayRangeError(DayError): pass
 
 
 def day_range_inclusive(start, end):
