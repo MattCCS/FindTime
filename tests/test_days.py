@@ -2,26 +2,73 @@
 import unittest
 
 from findtime import days
+from findtime import peekgen
 
 
 class TestDays(unittest.TestCase):
 
-    @classmethod
-    def setUp(self):
-        self.GARBAGE = 'hello'
+    def evaluate(self, test_days):
+        return days.parse_days_iter(peekgen.peekgen(test_days))
 
-    def test_days(self):
+    def test_no_days(self):
+        with self.assertRaises(days.DaysMissingError):
+            self.evaluate('')
 
-        TEST_TIME = 'hello'
-        TEST_DAYS = [
-            '',
-        ]
+    def test_wildcard(self):
+        self.assertListEqual(list('MTWRFSU'), self.evaluate('*'))
 
-        for test_days in TEST_DAYS:
-            test_days = test_days + TEST_TIME
-            test_days_peekgen = peekgen.peekgen(test_days)
-            print parse_days_iter(test_days_peekgen)
-            print list(test_days_peekgen)
+    def test_good_day(self):
+        self.assertListEqual(list('M'), self.evaluate('M'))
+
+    def test_good_days(self):
+        self.assertListEqual(list('MTW'), self.evaluate('MTW'))
+
+    def test_no_runover_days(self):
+        self.assertListEqual(list('MTW'), self.evaluate('MTW9-5'))
+
+    def test_late_wildcard_ends_early_days(self):
+        self.assertListEqual(list('MTW'), self.evaluate('MTW*'))
+
+    def test_duplicates(self):
+        with self.assertRaises(days.DuplicateDaysError):
+            self.evaluate('MM')
+
+    def test_non_monotonic(self):
+        with self.assertRaises(days.NonMonotonicDaysError):
+            self.evaluate('FM')
+
+    def test_non_monotonic_range(self):
+        with self.assertRaises(days.NonMonotonicDayRangeError):
+            self.evaluate('F-M')
+
+    def test_non_monotonic_range_same_day(self):
+        with self.assertRaises(days.NonMonotonicDayRangeError):
+            self.evaluate('M-M')
+
+    def test_short_range(self):
+        with self.assertRaises(days.InvalidDayRangeError):
+            self.evaluate('M-')
+
+    def test_range_bad_start(self):
+        with self.assertRaises(days.InvalidDayRangeError):
+            self.evaluate('M--')
+
+    def test_range_bad_end(self):
+        with self.assertRaises(days.InvalidDayError):
+            self.evaluate('--F')
+
+    def test_range_bad_both(self):
+        with self.assertRaises(days.InvalidDayError):
+            self.evaluate('---')
+
+    def test_good_range(self):
+        self.assertListEqual(list('MTWRF'), self.evaluate('M-F'))
+
+    def test_no_runover_range(self):
+        self.assertListEqual(list('MTWRF'), self.evaluate('M-F9-5'))
+
+    def test_late_wildcard_ends_early_range(self):
+        self.assertListEqual(list('MTWRF'), self.evaluate('M-F*'))
 
 
 if __name__ == '__main__':
