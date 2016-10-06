@@ -3,7 +3,6 @@ Parser for days!
 """
 
 
-WILDCARD = '*'
 DAYS_ORDERED = list("MTWRFSU")
 DAYS = dict(zip(DAYS_ORDERED, xrange(7)))
 
@@ -29,7 +28,7 @@ def parse_days_iter(days_peekgen):
     except StopIteration:
         raise DaysMissingError()
 
-    if first == WILDCARD:
+    if first == '-':
         return DAYS_ORDERED
     elif first not in DAYS:
         raise InvalidDayError()
@@ -39,8 +38,7 @@ def parse_days_iter(days_peekgen):
     for maybe_day in days_peekgen:
         if maybe_day in valid_days:
             days.append(maybe_day)
-            if maybe_day == '-':
-                valid_days.remove('-')
+            valid_days.discard('-')
         else:
             days_peekgen.send(maybe_day)  # we must have reached the end!
             break

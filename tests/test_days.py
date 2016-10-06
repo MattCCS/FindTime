@@ -15,7 +15,7 @@ class TestDays(unittest.TestCase):
             self.evaluate('')
 
     def test_wildcard(self):
-        self.assertListEqual(list('MTWRFSU'), self.evaluate('*'))
+        self.assertListEqual(list('MTWRFSU'), self.evaluate('-'))
 
     def test_good_day(self):
         self.assertListEqual(list('M'), self.evaluate('M'))
@@ -27,7 +27,7 @@ class TestDays(unittest.TestCase):
         self.assertListEqual(list('MTW'), self.evaluate('MTW9-5'))
 
     def test_late_wildcard_ends_early_days(self):
-        self.assertListEqual(list('MTW'), self.evaluate('MTW*'))
+        self.assertListEqual(list('MTW'), self.evaluate('MTW-'))
 
     def test_duplicates(self):
         with self.assertRaises(days.DuplicateDaysError):
@@ -52,14 +52,6 @@ class TestDays(unittest.TestCase):
     def test_range_bad_start(self):
         with self.assertRaises(days.InvalidDayRangeError):
             self.evaluate('M--')
-
-    def test_range_bad_end(self):
-        with self.assertRaises(days.InvalidDayError):
-            self.evaluate('--F')
-
-    def test_range_bad_both(self):
-        with self.assertRaises(days.InvalidDayError):
-            self.evaluate('---')
 
     def test_good_range(self):
         self.assertListEqual(list('MTWRF'), self.evaluate('M-F'))

@@ -1,7 +1,20 @@
 true work: 7/11-12/30M-F9-5p
 work: M-F9-5p
 busy: M-F7-9a,5-6p
-free: M-Fp6:30- S10- Up12-8
+free: M-F6:30-p S10- U12-8p
 
 last semester: M-R4:30-9p R8-10p S1-4p
+
+########################################
+
+9/1-17M-R-6:30p
+
+Times:
+    - must be fully qualified
+        `-5:00p` is invalid
+        `3:00-p` is invalid
+        `-` is valid
+        `-p` is invalid
+        `9-5` is valid
+
 
