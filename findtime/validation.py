@@ -22,7 +22,7 @@ def validate_times(start, end, am, pm):
         de = HALF_DAY
     if not am and not pm:
         if not start >= end:
-            raise errors.TimeValidationError("Time period not provided and not deterministic!")
+            raise errors.TimeValidationError("Time range ambiguous!")
         de = HALF_DAY
 
     start += ds
