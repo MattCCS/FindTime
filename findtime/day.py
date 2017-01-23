@@ -4,6 +4,7 @@ import functools
 
 
 HALF_DAY = 12 * 60
+WHOLE_DAY = 24 * 60 - 1
 
 
 def minutes_to_hhmm(minutes):
@@ -14,7 +15,7 @@ def minutes_to_hhmm(minutes):
 
 def pair_up(iterable):
     iterable = list(iterable)
-    return zip(iterable, iterable[1:])[::2]
+    return list(zip(iterable, iterable[1:]))[::2]
 
 
 class Day(object):
@@ -57,6 +58,22 @@ class Day(object):
                 yield (time, False)
             flags += delta
 
+    @staticmethod
+    def invert(flagged):
+        entire_day = [(0, True), (WHOLE_DAY, False)]
+
+        counts = collections.defaultdict(int)
+        for (time, flag) in (flagged + entire_day):
+            counts[time] += (1 if flag else -1)
+
+        flags = 0
+        for (time, delta) in sorted(counts.items()):
+            if flags != 1 and flags + delta == 1:
+                yield (time, True)
+            elif flags == 1 and flags + delta != 1:
+                yield (time, False)
+            flags += delta
+
     def __or__(self, other):
         other = other if other else []
         return Day(Day.iterate(list(self), list(other), 1))
@@ -71,8 +88,14 @@ class Day(object):
     def __rand__(self, other):
         return self & other
 
+    def __invert__(self):
+        return Day(Day.invert(list(self)))
+
     def __iter__(self):
         return iter(self.flagged_times)
+
+    def __bool__(self):
+        return bool(self.flagged_times)
 
     def __repr__(self):
         ranges = ', '.join(

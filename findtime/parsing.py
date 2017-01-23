@@ -1,8 +1,8 @@
 
 import re
 
-import constants
-import errors
+from findtime import constants
+from findtime import errors
 
 
 TIME_REGEX = r'''(?P<h>[\d]{1,2})(:(?P<m>[\d]{2}))?$'''
@@ -18,7 +18,7 @@ DATE_REGEX = r'''(?P<m1>[1-9]\d?)/(?P<d1>[1-9]\d?)-((?P<m2>[1-9]\d?)/)?(?P<d2>[1
 def day_range_inclusive(start, end):
     # if not constants.DAYS[start] < constants.DAYS[end]:
     #     raise errors.BadDayRangeError("Start day does not come before end!")
-    # return [constants.DAYS_REVERSED[i] for i in xrange(constants.DAYS[start], constants.DAYS[end] + 1)]
+    # return [constants.DAYS_REVERSED[i] for i in range(constants.DAYS[start], constants.DAYS[end] + 1)]
     start_i = constants.DAYS[start]
     end_i = constants.DAYS[end]
     delta = abs(end_i - start_i)
